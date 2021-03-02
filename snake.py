@@ -1,19 +1,23 @@
 import tkinter as tk
 from tkinter import messagebox
 import pygame
+import math
+import random
 
 class cube(object):
-    rows = 0
-    w = 0
+    rows = 20
+    w = 500
     def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
         self.pos = start
         self.dirnx = 1
         self.dirny = 0
         self.color = color
+
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
         self.dirny = dirny
         self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+        
     def draw(self, surface, eyes=False):
         dis = self.w // self.rows
         i = self.pos[0]
@@ -80,9 +84,26 @@ class snake(object):
                 else: c.move(c.dirnx, c.dirny)
 
     def reset(self, pos):
-        pass
+        self.head = cube(pos)
+        self.body = []
+        self.body.append(self.head)
+        self.turns = {}
+        self.dirnx = 0
+        self.dirny = 1
+
     def add_cube(self):
-        pass
+        tail = self.body[-1]
+        dx, dy = tail.dirnx, tail.dirny
+
+        if dx == 1 and dy == 0:
+            self.body.append(cube((tail.pos[0]-1, tail.pos[1])))
+        elif dx == -1 and dy == 0:
+            self.body.append(cube((tail.pos[0]+1, tail.pos[1])))
+        elif dx == 0 and dy == 1:
+            self.body.append(cube((tail.pos[0], tail.pos[1]-1)))
+        elif dx == 0 and dy == -1:
+            self.boddy.append(cube((tail.pos[0], tail.pos[1]+1)))
+
     def draw(self, surface):
         for i, c in enumerate(self.body):
             if i == 0:
